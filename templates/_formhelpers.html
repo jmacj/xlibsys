@@ -1,0 +1,21 @@
+{% macro render_field(field) %}
+    <div class="form-group has-feedback">
+        {{ field.label }}
+        {{ field(class_="form-control" , required="true") }}
+        {% if field.id=='first_name' or field.id=='last_name': %}
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        {% endif %}
+        {% if field.id=='email_address': %}
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+        {% endif %}
+        {% if field.id=='password': %}
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        {% endif %}
+        {% if field.id=='confirm_password': %}
+            <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+        {% endif %}
+        {% for error in field.errors %}
+            <span class="form-text text-danger">{{ error }}</span>
+        {% endfor %}
+    </div>
+{% endmacro %}
