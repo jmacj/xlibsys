@@ -6,11 +6,63 @@
 
 {% set content_header = "Acquisition" %}
 
-{% block content %}
-
-    
-   
+{% block styles %}
 {% endblock %}
 
-{% block scripts %} {% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">Acquisition</h3>
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				<table id="delegatesTable" class="table table-bordered table-hover">
+				</table>
+			</div>
+			<!-- /.box-body -->
+			</div>
+		<!-- /.box -->
+	</div>
+	<!-- /.col -->
+</div>
+<!-- /.row -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(function() {
+        var table =  $('#delegatesTable').DataTable({
+            ajax: {
+                url: '/api/acquisition',
+            dataSrc: ''
+            },
+            select: true,
+            columns: [
+                {title: 'ID', data: 'bn'},
+                {title: 'Title', data: 'title'},
+                {title: 'Author', data: 'author'},
+                {title: 'Publisher', data: 'publisher'},
+                {title: 'Date Published', data: 'published_on'},
+                {title: 'Category', data: 'tags'}
+            ]
+        });
+        $('#delegatesTable tbody').on('click', 'tr', function() {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            } else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+</script>
+<script>
+	$(function(){
+		$('example1').DataTable()
+		$('example2').DataTable()
+	})
+</script>
+{% endblock %}
 

@@ -34,9 +34,42 @@ def create_admin_users():
     User.get_or_create(email_address='admin3@xlibsys.com',
         defaults={'password': generate_password_hash('secret'), 'role': 1})
 
+class Acquisition(BaseModel):
+    bn = CharField(primary_key=True)
+    title = CharField(max_length=255)
+    author = CharField(max_length=255)
+    publisher = CharField(max_length=255)
+    published_on = DateField()
+    tags = CharField(max_length=100)
+
+    class Meta:
+    	table_name = 'acquisition'
+
+class Inventory(BaseModel):
+	id = CharField(primary_key=True)
+	acquisition = ForeignKeyField(Acquisition, related_name='inventory_copies')
+	status = SmallIntegerField(default=1)
+
+class Circulation(BaseModel):
+	id = PrimaryKeyField()
+	copy = ForeignKeyField(Inventory, related_name='circulations')
+	user = ForeignKeyField(User, related_name='borrowed_books')
+	borrowed_date = DateField()
+	due_date = DateField()
+	returned_date = DateField()
+	status = SmallIntegerField(default=0)
+
+class Reservation(BaseModel):
+	id = PrimaryKeyField()
+	acquisition = ForeignKeyField(Acquisition, related_name='reservations')
+	user = ForeignKeyField(User, related_name='book_reservations')
+	reservation_date = DateField()
+	due_date = DateField()
+	status = SmallIntegerField(default=0)
+
 def initialize_db():
     db.connect()
-    db.create_tables([User], safe=True)
+    db.create_tables([User, Acquisition], safe=True)
     create_admin_users()
 
 def close_db():
