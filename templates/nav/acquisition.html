@@ -1,12 +1,28 @@
 {% extends "base2.html" %}
-
-{% block title %}xLibSys | Acquisition{% endblock %}
+{% from '_formhelpers.html' import render_field %}
 
 {% set active_page = "acquisition" %}
 
 {% set content_header = "Acquisition" %}
 
+{% block title %}xLibSys | Acquisition{% endblock %}
+
 {% block styles %}
+<style>
+    .example-modal .modal {
+      position: relative;
+      top: auto;
+      bottom: auto;
+      right: auto;
+      left: auto;
+      display: block;
+      z-index: 1;
+    }
+
+    .example-modal .modal {
+      background: transparent !important;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -14,11 +30,19 @@
 	<div class="col-xs-12">
 		<div class="box">
 			<div class="box-header">
-				<h3 class="box-title">Acquisition</h3>
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
+                	Add New Book
+              	</button>
 			</div>
 			<!-- /.box-header -->
 			<div class="box-body">
-				<table id="delegatesTable" class="table table-bordered table-hover">
+				{% if success_message is not none %}
+			    	<div class="alert alert-success" role="alert">{{ success_message }}</div>
+			    {% endif %}
+			    {% if error_message is not none %}
+			    	<div class="alert alert-danger" role="alert">{{ error_message }}</div>
+			    {% endif %}
+				<table id="acqTable" class="table">
 				</table>
 			</div>
 			<!-- /.box-body -->
@@ -28,12 +52,43 @@
 	<!-- /.col -->
 </div>
 <!-- /.row -->
+
+
+<div class="modal fade" id="modal-default">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add New Book</h4>
+      </div>
+      <form action="{{ url_for('site.add_acquisition') }}" method="POST">
+	      <div class="modal-body">
+			{{ form.csrf_token }}
+			{{ render_field(form.bn) }}
+			{{ render_field(form.title) }}
+			{{ render_field(form.author) }}
+			{{ render_field(form.publisher) }}
+			{{ render_field(form.published_on) }}
+			{{ render_field(form.tags) }}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+	        <button type="submit" class="btn btn-primary">Add</button>
+	      </div>
+	  </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 {% endblock %}
 
 {% block scripts %}
 <script>
     $(function() {
-        var table =  $('#delegatesTable').DataTable({
+        var table =  $('#acqTable').DataTable({
             ajax: {
                 url: '/api/acquisition',
             dataSrc: ''
@@ -48,7 +103,7 @@
                 {title: 'Category', data: 'tags'}
             ]
         });
-        $('#delegatesTable tbody').on('click', 'tr', function() {
+        $('#acqTable tbody').on('click', 'tr', function() {
             if ( $(this).hasClass('selected') ) {
                 $(this).removeClass('selected');
             } else {
@@ -57,12 +112,6 @@
             }
         });
     });
-</script>
-<script>
-	$(function(){
-		$('example1').DataTable()
-		$('example2').DataTable()
-	})
 </script>
 {% endblock %}
 
