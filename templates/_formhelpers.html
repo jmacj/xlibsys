@@ -1,7 +1,15 @@
 {% macro render_field(field) %}
     <div class="form-group has-feedback">
         {{ field.label }}
-        {{ field(class_="form-control" , required="true") }}
+        
+        {% if field.type=='DateField': %}
+            {{ field(class_="form-control" , required="true", type="date") }}
+        {% endif %}
+        
+        {% if field.type != 'DateField': %}
+            {{ field(class_="form-control" , required="true") }}
+        {% endif %}
+
         {% if field.id=='first_name' or field.id=='last_name': %}
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
         {% endif %}

@@ -6,11 +6,56 @@
 
 {% set content_header = "Circulation" %}
 
-{% block content %}
 
-    
-   
+{% block content %}
+<!-- <div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+				<h3 class="box-title">Acquisition</h3>
+			</div> -->
+			<!-- /.box-header -->
+			<!-- <div class="box-body">
+				<table id="acqTable" class="table">
+				</table>
+			</div> -->
+			<!-- /.box-body -->
+			<!-- </div> -->
+		<!-- /.box -->
+	<!-- </div> -->
+	<!-- /.col -->
+<!-- </div> -->
+<!-- /.row -->
 {% endblock %}
 
-{% block scripts %} {% endblock %}
+{% block scripts %}
+<!-- <script>
+    $(function() {
+        var table =  $('#cirTable').DataTable({
+            ajax: {
+                url: '/api/circulation',
+            dataSrc: ''
+            },
+            select: true,
+            columns: [
+                {title: 'ID', data: 'bn'},
+                {title: 'Title', data: 'title'},
+                {title: 'Author', data: 'author'},
+                {title: 'Publisher', data: 'publisher'},
+                {title: 'Date Published', data: 'published_on'},
+                {title: 'Category', data: 'tags'}
+            ]
+        });
+        $('#cirTable tbody').on('click', 'tr', function() {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            } else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+</script> -->
+{% endblock %}
+
 
