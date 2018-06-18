@@ -41,14 +41,19 @@ class Acquisition(BaseModel):
     publisher = CharField(max_length=255)
     published_on = DateField()
     tags = CharField(max_length=100)
+    no_of_copies = IntegerField()
 
     class Meta:
     	table_name = 'acquisition'
 
 class Inventory(BaseModel):
-	id = CharField(primary_key=True)
-	acquisition = ForeignKeyField(Acquisition, related_name='inventory_copies')
-	status = SmallIntegerField(default=1)
+	inventory_id = CharField(primary_key=True)
+	title = CharField(max_length=255)
+	author = CharField(max_length=255)
+	publisher = CharField(max_length=255)
+	published_on = DateField()
+	tags = CharField(max_length=100)
+	status = CharField(default='On Shelf')
 
 class Circulation(BaseModel):
 	id = PrimaryKeyField()
@@ -69,7 +74,7 @@ class Reservation(BaseModel):
 
 def initialize_db():
     db.connect()
-    db.create_tables([User, Acquisition], safe=True)
+    db.create_tables([User, Acquisition, Inventory], safe=True)
     create_admin_users()
 
 def close_db():

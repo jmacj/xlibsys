@@ -5,8 +5,12 @@
         {% if field.type=='DateField': %}
             {{ field(class_="form-control" , required="true", type="date") }}
         {% endif %}
+
+        {% if field.type=='IntegerField': %}
+            {{ field(class_="form-control" , required="true", type="number", min="1") }}
+        {% endif %}
         
-        {% if field.type != 'DateField': %}
+        {% if field.type != 'DateField' and field.type != 'IntegerField': %}
             {{ field(class_="form-control" , required="true") }}
         {% endif %}
 

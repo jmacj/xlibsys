@@ -62,7 +62,7 @@
           <span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Add New Book</h4>
       </div>
-      <form action="{{ url_for('site.add_acquisition') }}" method="POST">
+      <form action="{{ url_for('acquisition.add_acquisition') }}" method="POST">
 	      <div class="modal-body">
 			{{ form.csrf_token }}
 			{{ render_field(form.bn) }}
@@ -71,6 +71,7 @@
 			{{ render_field(form.publisher) }}
 			{{ render_field(form.published_on) }}
 			{{ render_field(form.tags) }}
+      {{ render_field(form.no_of_copies) }}
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
@@ -100,7 +101,8 @@
                 {title: 'Author', data: 'author'},
                 {title: 'Publisher', data: 'publisher'},
                 {title: 'Date Published', data: 'published_on'},
-                {title: 'Category', data: 'tags'}
+                {title: 'Category', data: 'tags'},
+                {title: 'Number of Copies', data: 'no_of_copies'}
             ]
         });
         $('#acqTable tbody').on('click', 'tr', function() {

@@ -1,12 +1,13 @@
 import os
 
 from flask import Flask, g, session
-from core import api, models, user, site
+from core import api, models, user, site, acquisition
 
 app = Flask(__name__)
 app.config.from_object("core.config")
 
 app.register_blueprint(api.app, url_prefix="/api")
+app.register_blueprint(acquisition.app, url_prefix="/acquisition")
 app.register_blueprint(user.app, url_prefix="/user")
 app.register_blueprint(site.app, url_prefix="/")
 
