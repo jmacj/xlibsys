@@ -12,7 +12,7 @@ app = Blueprint("site", __name__)
 def index():
 	# return jsonify(session['user'])
 	book_count = Inventory.select().count()
-	borrowed_count = Inventory.select().where(Inventory.status=='Borrowed').count()
+	borrowed_count = Inventory.select().where(Inventory.status=='Out').count()
 	user_count = User.select().count()
 	return render_template('nav/index.html', book_count=book_count, borrowed_count=borrowed_count, user_count=user_count)
 
