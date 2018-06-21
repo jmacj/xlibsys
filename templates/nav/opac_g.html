@@ -1,0 +1,71 @@
+{% extends "base3.html" %}
+
+{% block title %}xLibSys | OPAC{% endblock %}
+
+{% set active_page = "opac" %}
+
+{% set content_header = "OPAC" %}
+{% block styles %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				{% if success_message is not none %}
+			    	<div class="alert alert-success" role="alert">{{ success_message }}</div>
+			    {% endif %}
+			    {% if error_message is not none %}
+			    	<div class="alert alert-danger" role="alert">{{ error_message }}</div>
+			    {% endif %}
+				<table id="invTable" class="table">
+				</table>
+			</div>
+			<!-- /.box-body -->
+			</div>
+		<!-- /.box -->
+	</div>
+	<!-- /.col -->
+</div>
+<!-- /.row -->
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(function() {
+        var table =  $('#invTable').DataTable({
+            ajax: {
+                url: '/api/inventory',
+            dataSrc: ''
+            },
+            select: true,
+            columns: [
+                {title: 'ID', data: 'inventory_id'},
+                {title: 'Title', data: 'title'},
+                {title: 'Author', data: 'author'},
+                {title: 'Publisher', data: 'publisher'},
+                {title: 'Date Published', data: 'published_on'},
+                {title: 'Category', data: 'tags'},
+                {title: 'Status', data: 'status'}
+            ]
+        });
+        $('#invTable tbody').on('click', 'tr', function() {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            } else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+	

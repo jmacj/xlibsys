@@ -1,4 +1,5 @@
 {% extends "base2.html" %}
+{% from '_formhelpers.html' import render_field %}
 
 {% block title %}xLibSys | Reservation{% endblock %}
 
@@ -7,10 +8,86 @@
 {% set content_header = "Reservation" %}
 
 {% block content %}
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box">
+			<div class="box-header">
+			</div>
+			<!-- /.box-header -->
+			<div class="box-body">
+				{% if success_message is not none %}
+			    	<div class="alert alert-success" role="alert">{{ success_message }}</div>
+			    {% endif %}
+			    {% if error_message is not none %}
+			    	<div class="alert alert-danger" role="alert">{{ error_message }}</div>
+			    {% endif %}
+				<table id="invTable" class="table">
+				</table>
+			</div>
+			<!-- /.box-body -->
+			</div>
+		<!-- /.box -->
+	</div>
+	<!-- /.col -->
+</div>
+<!-- /.row -->
 
-    
-   
+
+<div class="modal fade" id="modal-default">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      	</button>
+        <h4 class="modal-title">Book Reservation</h4>
+      </div>
+      <form action="{{ url_for('reservation.add_reservation') }}" method="POST">
+	      <div class="modal-body">
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+	        <button type="submit" class="btn btn-primary">Add</button>
+	      </div>
+	  </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 {% endblock %}
 
-{% block scripts %} {% endblock %}
-
+{% block scripts %}
+<script>
+    $(function() {
+        var table =  $('#invTable').DataTable({
+            ajax: {
+                url: '/api/reservation',
+            dataSrc: ''
+            },
+            select: true,
+            columns: [
+                {title: 'Reservation ID', data: 'id'},
+                {title: 'Book ID', data: 'book'},
+                {title: 'Title', data: 'title'},
+                {title: 'Reservee', data: 'email_address'},
+                {title: 'Reservation Date', data: 'reservation_date'},
+                {title: 'Due Date', data: 'due_date'},
+                {title: 'Status', data: 'status'},
+                {title: 'Action', data: 'id', render: function(data, type, row, meta){
+                	return '<a class="btn btn-default" href="{{ url_for('reservation.update_reservation') }}/' + data + ' ">Approve</button>'
+                }}
+            ]
+        });
+        $('#invTable tbody').on('click', 'tr', function() {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            } else {
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
+        });
+    });
+</script>
+{% endblock %}

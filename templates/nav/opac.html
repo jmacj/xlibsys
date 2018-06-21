@@ -1,12 +1,11 @@
 {% extends "base2.html" %}
 {% from '_formhelpers.html' import render_field %}
 
-{% set active_page = "acquisition" %}
+{% block title %}xLibSys | OPAC{% endblock %}
 
-{% set content_header = "Acquisition" %}
+{% set active_page = "opac" %}
 
-{% block title %}xLibSys | Acquisition{% endblock %}
-
+{% set content_header = "OPAC" %}
 {% block styles %}
 <style>
     .example-modal .modal {
@@ -31,8 +30,8 @@
 		<div class="box">
 			<div class="box-header">
 				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
-        	Add New Book
-      	</button>
+                	Reserve a Book
+              	</button>
 			</div>
 			<!-- /.box-header -->
 			<div class="box-body">
@@ -42,7 +41,7 @@
 			    {% if error_message is not none %}
 			    	<div class="alert alert-danger" role="alert">{{ error_message }}</div>
 			    {% endif %}
-				<table id="acqTable" class="table">
+				<table id="invTable" class="table">
 				</table>
 			</div>
 			<!-- /.box-body -->
@@ -59,19 +58,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Add New Book</h4>
+          <span aria-hidden="true">&times;</span>
+      	</button>
+        <h4 class="modal-title">Book Reservation</h4>
       </div>
-      <form action="{{ url_for('acquisition.add_acquisition') }}" method="POST">
+      <form action="{{ url_for('reservation.add_reservation') }}" method="POST">
 	      <div class="modal-body">
-			{{ form.csrf_token }}
-			{{ render_field(form.bn) }}
-			{{ render_field(form.title) }}
-			{{ render_field(form.author) }}
-			{{ render_field(form.publisher) }}
-			{{ render_field(form.published_on) }}
-			{{ render_field(form.tags) }}
-      {{ render_field(form.no_of_copies) }}
+				{{ form.csrf_token }}
+				{{ render_field(form.inventory_id) }}
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
@@ -89,23 +83,26 @@
 {% block scripts %}
 <script>
     $(function() {
-        var table =  $('#acqTable').DataTable({
+        var table =  $('#invTable').DataTable({
             ajax: {
-                url: '/api/acquisition',
+                url: '/api/inventory',
             dataSrc: ''
             },
             select: true,
             columns: [
-                {title: 'ID', data: 'bn'},
+                {title: 'ID', data: 'inventory_id'},
                 {title: 'Title', data: 'title'},
                 {title: 'Author', data: 'author'},
                 {title: 'Publisher', data: 'publisher'},
                 {title: 'Date Published', data: 'published_on'},
                 {title: 'Category', data: 'tags'},
-                {title: 'Number of Copies', data: 'no_of_copies'}
+                {title: 'Status', data: 'status'},
+                {title: 'Action', data: 'inventory_id', render: function(data, type, row, meta){
+                	return '<a class="btn btn-default" href="{{ url_for('reservation.add_reservation') }}/' + data + ' ">Reserve</button>'
+                }}
             ]
         });
-        $('#acqTable tbody').on('click', 'tr', function() {
+        $('#invTable tbody').on('click', 'tr', function() {
             if ( $(this).hasClass('selected') ) {
                 $(this).removeClass('selected');
             } else {
@@ -117,3 +114,4 @@
 </script>
 {% endblock %}
 
+	

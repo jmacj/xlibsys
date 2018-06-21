@@ -1,13 +1,14 @@
 import os
 
 from flask import Flask, g, session
-from core import api, models, user, site, acquisition
+from core import api, models, user, site, acquisition, reservation
 
 app = Flask(__name__)
 app.config.from_object("core.config")
 
 app.register_blueprint(api.app, url_prefix="/api")
 app.register_blueprint(acquisition.app, url_prefix="/acquisition")
+app.register_blueprint(reservation.app, url_prefix="/reservation")
 app.register_blueprint(user.app, url_prefix="/user")
 app.register_blueprint(site.app, url_prefix="/")
 

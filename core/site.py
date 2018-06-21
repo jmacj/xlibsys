@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, redirect, render_template, request, jsonify, url_for, session
 from markupsafe import escape
 
-from core.forms import AcquisitionForm
+from core.forms import AcquisitionForm, ReservationForm
 from core.models import User, DoesNotExist, Acquisition, Inventory
 from core.wrappers import authenticated, guest
 
@@ -40,6 +40,23 @@ def inventory():
 @app.route('reservation', methods=["GET"])
 @authenticated
 def reservation():
+	success_message = error_message = None
 	# return jsonify(session['user'])
-	return render_template('nav/reservation.html')
+	return render_template('nav/reservation.html', success_message=success_message, error_message=error_message)
 
+@app.route('opac/guest', methods=["GET"])
+@guest
+def opac_g():
+	form = ReservationForm()
+	success_message = error_message = None
+	# return jsonify(session['user'])
+	return render_template('nav/opac_g.html', form=form, success_message=success_message, error_message=error_message)
+
+
+@app.route('opac', methods=["GET"])
+@authenticated
+def opac():
+	form = ReservationForm()
+	success_message = error_message = None
+	# return jsonify(session['user'])
+	return render_template('nav/opac.html', form=form, success_message=success_message, error_message=error_message)

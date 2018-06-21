@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify
 
 from markupsafe import escape
 
-from core.models import Acquisition, Inventory
+from core.models import Acquisition, Inventory, Reservation, User
 
 from datetime import datetime, date, time
 
@@ -24,3 +24,6 @@ def del_acquisition():
 def get_inventory():
 	return jsonify([row for row in Inventory.select(Inventory).dicts()])
 
+@app.route('/reservation', methods=['GET'])
+def get_reservation():
+	return jsonify([row for row in User.select(Reservation, Inventory.title, User.email_address).join(Reservation).join(Inventory).dicts()])

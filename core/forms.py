@@ -5,7 +5,7 @@ from wtforms.fields import DateField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import Required, ValidationError, Optional, Email, EqualTo
 
-from core.models import User
+from core.models import User, Inventory
 
 
 from datetime import datetime
@@ -33,3 +33,6 @@ class AcquisitionForm(FlaskForm):
 	published_on = DateField('Date Published')
 	tags = StringField('Category')
 	no_of_copies = IntegerField('No of copies', [Required()])
+
+class ReservationForm(FlaskForm):
+	inventory_id = StringField('Book ID', [Required()])

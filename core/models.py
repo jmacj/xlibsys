@@ -66,15 +66,15 @@ class Circulation(BaseModel):
 
 class Reservation(BaseModel):
 	id = PrimaryKeyField()
-	acquisition = ForeignKeyField(Acquisition, related_name='reservations')
+	book = ForeignKeyField(Inventory, related_name='reservations')
 	user = ForeignKeyField(User, related_name='book_reservations')
 	reservation_date = DateField()
-	due_date = DateField()
-	status = SmallIntegerField(default=0)
+	due_date = DateField(null=True)
+	status = CharField(default='Pending')
 
 def initialize_db():
     db.connect()
-    db.create_tables([User, Acquisition, Inventory], safe=True)
+    db.create_tables([User, Acquisition, Inventory, Reservation], safe=True)
     create_admin_users()
 
 def close_db():

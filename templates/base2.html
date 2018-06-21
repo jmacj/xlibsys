@@ -5,7 +5,9 @@
     (url_for('site.inventory'), 'inventory', 'Inventory', 'fa fa-archive'),
     (url_for('site.reservation'), 'reservation', 'Reservation', 'fa fa-pencil-square-o')
 ] %}
-
+{% set other_nav = [
+    (url_for('site.opac'), 'opac', 'OPAC', 'fa fa-book')
+] %}
 
 <!DOCTYPE html>
 <html>
@@ -103,7 +105,15 @@
           </a>
         </li>
         {% endfor %}
-      
+        <li class="header">OTHER NAVIGATION</li>
+        {% for href, id, caption, icon in other_nav %}
+        <li {% if id == active_page %} class="active"{% endif %}>
+          <a href="{{ href|e }}">
+            <i class="{{ icon }}"></i>
+            <span>{{ caption|e }}</span>
+          </a>
+        </li>
+        {% endfor %}
       </ul>
     </section>
     <!-- /.sidebar -->
