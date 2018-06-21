@@ -16,6 +16,7 @@ def get_acquisition():
 
 @app.route('/dis', methods=['GET'])
 def del_acquisition():
+	Reservation.drop_table()
 	Acquisition.drop_table()
 	Inventory.drop_table()
 	return 'deleted'
